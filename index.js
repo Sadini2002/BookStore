@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
-const connectDB = require('./conn/conn');
+require('./conn/conn');
+
 
 
 //vLJia54jUJgCWacq
