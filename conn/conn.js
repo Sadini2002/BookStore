@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 //iWyudFI9VsIKRuwQ
 //jasingha2002sadininipunika_db_user
@@ -13,4 +13,4 @@ const conn = async () => {
     }   
 };
 
-conn();
+export default conn;

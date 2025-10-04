@@ -1,5 +1,6 @@
-const router = require("express").Router();
-const User = require('../models/user');
+import express from "express";
+const router = express.Router();
+import User from "../models/user.js";
 
 //sign up
 
@@ -12,14 +13,14 @@ router.post('/signup', async (req, res) => {
             .json({ message: "username must be more than 4 characters" });
         }
         // check username already exists
-        const existingUser = await User.find({ username: username });
+        const existingUser = await User.findOne({ username: req.body.username });
         if (existingUser) {
             return res.status(400)
             .json({ message: "username already exists" });
         }
         //check email already exists
 
-        const existingEmail = await User.find({ email: email });
+        const existingEmail = await User.findOne({ email: req.body.email });
         if (existingEmail) {
             return res.status(400)
             .json({ message: "email already exists" });
@@ -56,4 +57,5 @@ router.post('/signup', async (req, res) => {
 
 
 
-module.exports = router;
+
+export default router;
