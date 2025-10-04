@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import User from "../models/user.js";
+import bcrypt from "bcrypt";
 
 //sign up
 
@@ -32,16 +33,20 @@ router.post('/signup', async (req, res) => {
             .json({ message: "Password must be more than 6 characters" });
         }
 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+        // create new user
+
 
         const user = new User({
-            username:username,
-            email:email, 
-            password:password, 
-            address:address
+            username,
+            email, 
+            password:hashedPassword, 
+            address
          });
         await user.save();
     
-        res.status(201).json({ message: "User registered successfully" });
+        res.status(200).json({ message: "User registered successfully" });
 
 
 
