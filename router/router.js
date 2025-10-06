@@ -60,6 +60,42 @@ router.post('/signup', async (req, res) => {
 
 });
 
+// sign in
+router.post('/signin', async (req, res) => {
+    try {const { username, password } = req.body;
+        // check username already exists
+        const existingUser = await User.findOne({ username: req.body.username });
+        if (existingUser) {
+            return res.status(400)
+            .json({ message: "Invalid credentials" });
+        }
+
+        //bycrpt
+        await bcrypt.compare(password, existingUser.password, (err, data) => {
+            
+        
+        if (data) {
+                return res.status(200).json({ message: "Login successful" });
+            } else {
+                return res.status(400).json({ message: "Invalid credentials" });
+            }
+        });
+        
+
+            
+
+        
+        
+    }
+       catch(error){
+        res.status(500).json({message: "internal server error"});
+    }
+
+});
+
+
+
+
 
 
 
