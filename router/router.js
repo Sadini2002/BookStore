@@ -3,6 +3,7 @@ const router = express.Router();
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import authenticateToken from "./userAuth.js";
 
 //sign up
 router.post('/signup', async (req, res) => {
@@ -61,7 +62,6 @@ router.post('/signup', async (req, res) => {
 });
 
 
-
 // sign in
 router.post('/signin', async (req, res) => {
     try {const { username, password } = req.body;
@@ -104,6 +104,19 @@ router.post('/signin', async (req, res) => {
         res.status(500).json({message: "internal server error"});
     }
 
+});
+
+//get user info
+router.get('/users/get-info', authenticateToken, async (req, res) => {
+    try {  
+        const { id } = req.params;
+        const data = await User.findById(id)
+        return res.status(200).json(data);
+        
+
+    }catch(error){
+        res.status(500).json({message: "internal server error"});
+    }
 });
 
 
