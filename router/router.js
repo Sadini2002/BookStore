@@ -2,9 +2,9 @@ import express from "express";
 const router = express.Router();
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 //sign up
-
 router.post('/signup', async (req, res) => {
     try {
         const { username, email, password, address } = req.body;
@@ -60,12 +60,14 @@ router.post('/signup', async (req, res) => {
 
 });
 
+
+
 // sign in
 router.post('/signin', async (req, res) => {
     try {const { username, password } = req.body;
         // check username already exists
         const existingUser = await User.findOne({ username: req.body.username });
-        if (existingUser) {
+        if (!existingUser) {
             return res.status(400)
             .json({ message: "Invalid credentials" });
         }
@@ -75,7 +77,18 @@ router.post('/signin', async (req, res) => {
             
         
         if (data) {
-                return res.status(200).json({ message: "Login successful" });
+                //generate token
+                const authClaims = [
+                    { username: existingUser.username}, 
+                    {role: existingUser.role}
+
+                 ];
+              
+                const token = jwt.sign({authClaims}, process.env.JWT_SECRET , {expiresIn: '30d'});
+                return res.status(200).json({ 
+                    id:existingUser._id, 
+                    role: existingUser.role, 
+                    token: token });
             } else {
                 return res.status(400).json({ message: "Invalid credentials" });
             }
