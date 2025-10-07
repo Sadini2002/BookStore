@@ -119,6 +119,24 @@ router.get('/users/get-info', authenticateToken, async (req, res) => {
     }
 });
 
+//update user info
+router.put('/users/update-info/:id', authenticateToken, async (req, res) => {
+    try {  
+        const { id } = req.params;
+        const { username, email, address } = req.body;
+        const updatedUser = await User.findByIdAndUpdate(id, { username, email, address }, { new: true });
+        return res.status(200).json(updatedUser);
+        
+
+    }catch(error){  
+    
+        res.status(500).json({message: "internal server error"});
+    }
+});
+
+
+
+
 
 
 
