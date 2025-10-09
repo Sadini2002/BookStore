@@ -1,15 +1,16 @@
-import router from "./userRoute.js";
+
+//import router from "./userRoute.js";
 import User from "../models/user.js";
-import jwt from "jsonwebtoken";
 import authenticateToken from "./userAuth.js";
 import express from "express";
 import book from "../models/bookModel.js";
+const router = express.Router(); 
 
 
 //add book
 router.post("/addbook", authenticateToken, async (req, res)=>{
 try{
-    const {id}= req.;
+    const {id}= req.params;
     await User.findById(id);
     if (User.role !== "admin"){
         return res.status(400).json({message:"You are not authorized to add book"})
@@ -92,8 +93,51 @@ router.get("/get-all-books", async (req, res)=>{
         })
     }})
 
+router.get ("/get-recent-books", async(req,res)=>{
+ try{
 
-module.exports = router;
+ }catch(error){
+    console.log(error)
+    return res.status(500).json({
+        message:"error occurred"
+    })
+ }   
+})
+
+router.delete("/delete-book", authenticateToken, async(req,res)=>
+{
+    try{
+        const {bookid} = req.body;
+        await book.findByIdAndDelete(bookid);
+        res.status(200)
+        .json({message:"Book deleted successfully"})
+    }catch(error){
+        console.log(error);
+        return res.status(500)
+        .json({
+            message:"An error occured"
+            
+        })
+    }
+})
+
+router.get("/get-book-by id/:id", async (req, res)=>{
+    try{
+        const {id}= req.params;
+        const book = await book.findById(id)
+        return res.json({
+            status:"Success",
+            data: book,
+        })
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({message:"An error occured"
+
+        })
+    }})
 
 
 
+
+
+export default router;

@@ -2,13 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import conn from "./conn/conn.js"; 
 import router from "./router/userRoute.js";
+import bookRouter from "./router/bookRoute.js";
+import User from "./models/user.js";
 
 dotenv.config();
 
 
 const app = express();
 app.use(express.json());
-app.use("/api/users", router);
+app.use("/api/users", User);
+app.use("/api/book", bookRouter);
+
 conn();
 
 
