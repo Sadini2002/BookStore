@@ -2,11 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import conn from "./conn/conn.js"; 
 import router from "./router/userRoute.js";
+
 dotenv.config();
 
 
-//vLJia54jUJgCWacq
-//mongodb+srv://<db_username>:<db_password>@cluster0.zdcdipd.mongodb.net/
 const app = express();
 app.use(express.json());
 app.use("/api/users", router);
