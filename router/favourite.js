@@ -1,6 +1,8 @@
-const router = require("express").Router();
-import User from "../models/user.";
-import authenticateToken from "./userAuth";
+import express from "express"
+import User from "../models/user.js";
+import authenticateToken from "./userAuth.js";
+
+const router= express.Router();
 
 
 //add book to favourite
@@ -22,7 +24,7 @@ try{
 
 
 })
-
+// remove book from favourite
 router.delete("/remove-book-from", authenticateToken, async(req, res)=>{
     try{
         const {bookid, id}= req.body;
@@ -33,12 +35,31 @@ router.delete("/remove-book-from", authenticateToken, async(req, res)=>{
 
         }
         await User.findByIdAndUpdate(id,{$push:{favourites: bookid}})
-        return res.status(200).json({message:"Book added to favourite"})
+        return res.status(200).json({message:"Book remove to favourite"})
     } catch(error){
-        req,status(500).json({message:"Internal server error"})
+        res.status(500).json({message:"Internal server error"})
     }
 }
 )
+// get favourite books
+router.get("/getFavouriteBook", authenticateToken, async(req, res)=>{
+    try{
+        const {id} = req.body;
+        const userData = await User.findById(Id).populate("favourite");
+        const favouriteBooks = userData.favourites;
+        return res.json({
+            status:"Success",
+            data: favouriteBooks,
+        })
+
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({
+            message:"An error occured"
+        })
+
+    }
+})
 
 
 
@@ -48,5 +69,5 @@ router.delete("/remove-book-from", authenticateToken, async(req, res)=>{
 
 
 
-module.exports= router;
+export default router;
  
