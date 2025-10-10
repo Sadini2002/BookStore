@@ -5,6 +5,7 @@ import router from "./router/userRoute.js";
 import bookRouter from "./router/bookRoute.js";
 import User from "./models/user.js";
 import favourite  from "./router/favourite.js";
+import cart  from  "./router/cart.js"
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/api/users", User);
 app.use("/api/book", bookRouter);
 app.use("/api/favourite", favourite);
+
 
 
 
