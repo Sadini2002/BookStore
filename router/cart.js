@@ -1,6 +1,8 @@
 const router = express.Router();
-import User from "../models/user";
-import authenticateToken from "./userAuth";
+import User from "../models/user.js";
+import authenticateToken from "./userAuth.js";
+import express from "express";
+
 
 
 // put book to cart
@@ -9,7 +11,7 @@ router.put("/addToCart",authenticateToken , async (req, res)=>{
         const { bookid, id} = req.body;
         const userData = await User.findById(id);
         const isBookCart= userData.cart.includes(bookid);
-         isBookFavourited(isBookCart){
+         if (isBookCart){
             return res.json({
                 status:"Success",
                 message:"Book is already cart"
@@ -104,4 +106,4 @@ router.get("/getCartItems", authenticateToken, async (req, res) => {
 
 
 
-module.exports = router;
+export default  router; 
